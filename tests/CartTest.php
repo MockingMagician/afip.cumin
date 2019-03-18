@@ -2,6 +2,7 @@
 
 namespace Mmatweb\Cumin\Tests;
 
+use Mmatweb\Cumin\BackEndInterface;
 use Mmatweb\Cumin\Cart;
 use PHPUnit\Framework\TestCase;
 
@@ -16,11 +17,12 @@ final class CartTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->cart = new Cart();
+        $backEnd = $this->createMock(BackEndInterface::class);
+        $this->cart = new Cart($backEnd->reveal());
     }
 
     public function test cart set up correctly()
     {
-        $this->assertInstanceOf(Cart::class, $this->cart);
+
     }
 }
