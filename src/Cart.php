@@ -2,22 +2,21 @@
 
 namespace Mmatweb\Cumin;
 
-
 class Cart
 {
     /** @var Item[] */
     private $items = [];
-
-    /** @var null  */
-    private $id = null;
+    private $id;
+    private $backEnd;
 
     public function __construct(?BackEndInterface $backEnd)
     {
         try {
-            $this->id = uniqid('cart_') . '_' . random_bytes(12);
+            $this->id = uniqid('cart_').'_'.random_bytes(12);
         } catch (\Exception $e) {
-            $this->id = uniqid('cart_') . '_' . rand(999, 999999);
+            $this->id = uniqid('cart_').'_'.rand(999, 999999);
         }
+        $this->backEnd = $backEnd;
     }
 
     public static function getCart(BackEndInterface $backEnd, $id): self
@@ -27,12 +26,14 @@ class Cart
 
     /**
      * @param Item $item
-     * @return Cart
+     *
      * @throws NotSameItemPriceException
+     *
+     * @return Cart
      */
     public function addItem(Item $item): self
     {
-        if (!isset($this->items[$item->getId()]) ) {
+        if (!isset($this->items[$item->getId()])) {
             $this->items[$item->getId()] = $item;
 
             return $this;
@@ -51,8 +52,7 @@ class Cart
 
     public function removeItem(Item $item): self
     {
-        if (!isset($this->items[$item->getId()]) ) {
-
+        if (!isset($this->items[$item->getId()])) {
             return $this;
         }
 
@@ -67,7 +67,7 @@ class Cart
 
     public function getItemsCount(): int
     {
-        return count($this->items);
+        return \count($this->items);
     }
 
     public function getCount(): int

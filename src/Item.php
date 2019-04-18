@@ -2,7 +2,6 @@
 
 namespace Mmatweb\Cumin;
 
-
 class Item
 {
     private $id;
@@ -10,7 +9,15 @@ class Item
     private $description;
     private $quantity;
 
-    public function getId(): int
+    public function __construct(string $id, float $price, string $description)
+    {
+        $this->id = $id;
+        $this->price = $price;
+        $this->description = $description;
+        $this->quantity = 1;
+    }
+
+    public function getId(): string
     {
         return $this->id;
     }
@@ -25,17 +32,9 @@ class Item
         return $this->description;
     }
 
-    public function __construct(int $id, float $price, string $description)
-    {
-        $this->id = $id;
-        $this->price = $price;
-        $this->description = $description;
-        $this->quantity = 1;
-    }
-
     public function addOne(): self
     {
-        $this->quantity++;
+        ++$this->quantity;
 
         return $this;
     }
@@ -46,7 +45,7 @@ class Item
             return $this;
         }
 
-        $this->quantity--;
+        --$this->quantity;
 
         return $this;
     }

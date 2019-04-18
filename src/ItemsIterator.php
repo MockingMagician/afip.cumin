@@ -2,29 +2,35 @@
 
 namespace Mmatweb\Cumin;
 
-
 class ItemsIterator implements \Iterator
 {
+    /**
+     * @var Cart
+     */
+    private $cart;
+
     public function __construct(Cart $cart)
     {
-
+        $this->cart = $cart;
     }
 
     /**
-     * Return the current element
-     * @link http://php.net/manual/en/iterator.current.php
-     * @return mixed Can return any type.
+     * Return the current element.
+     *
+     * @see http://php.net/manual/en/iterator.current.php
+     *
+     * @return mixed can return any type
+     *
      * @since 5.0.0
      */
     public function current()
     {
-        // TODO: Implement current() method.
     }
 
     /**
-     * Move forward to next element
-     * @link http://php.net/manual/en/iterator.next.php
-     * @return void Any returned value is ignored.
+     * Move forward to next element.
+     *
+     * @see http://php.net/manual/en/iterator.next.php
      * @since 5.0.0
      */
     public function next()
@@ -33,9 +39,12 @@ class ItemsIterator implements \Iterator
     }
 
     /**
-     * Return the key of the current element
-     * @link http://php.net/manual/en/iterator.key.php
-     * @return mixed scalar on success, or null on failure.
+     * Return the key of the current element.
+     *
+     * @see http://php.net/manual/en/iterator.key.php
+     *
+     * @return mixed scalar on success, or null on failure
+     *
      * @since 5.0.0
      */
     public function key()
@@ -44,10 +53,13 @@ class ItemsIterator implements \Iterator
     }
 
     /**
-     * Checks if current position is valid
-     * @link http://php.net/manual/en/iterator.valid.php
-     * @return boolean The return value will be casted to boolean and then evaluated.
-     * Returns true on success or false on failure.
+     * Checks if current position is valid.
+     *
+     * @see http://php.net/manual/en/iterator.valid.php
+     *
+     * @return bool The return value will be casted to boolean and then evaluated.
+     *              Returns true on success or false on failure.
+     *
      * @since 5.0.0
      */
     public function valid()
@@ -56,9 +68,9 @@ class ItemsIterator implements \Iterator
     }
 
     /**
-     * Rewind the Iterator to the first element
-     * @link http://php.net/manual/en/iterator.rewind.php
-     * @return void Any returned value is ignored.
+     * Rewind the Iterator to the first element.
+     *
+     * @see http://php.net/manual/en/iterator.rewind.php
      * @since 5.0.0
      */
     public function rewind()
