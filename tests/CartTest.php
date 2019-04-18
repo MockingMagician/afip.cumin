@@ -13,7 +13,6 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @internal
- * @coversNothing
  */
 final class CartTest extends TestCase
 {
@@ -55,7 +54,7 @@ final class CartTest extends TestCase
     public function test save work()
     {
         $this->backEnd
-            ->write(Argument::exact(self::SESSION_ID), Argument::any())
+            ->write(Argument::exact(self::SESSION_ID), Argument::type('string'))
             ->shouldBeCalledOnce()
             ->willReturn(true)
         ;
@@ -138,7 +137,7 @@ final class CartTest extends TestCase
     }
 
     /**
-     * @throws \Mmatweb\Cumin\NotSameItemPriceException
+     * @param Cart $cart
      * @depends test cart add two different item so count two and two item
      */
     public function test cart clear(Cart $cart)

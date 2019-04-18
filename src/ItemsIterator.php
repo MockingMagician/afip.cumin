@@ -5,13 +5,14 @@ namespace Mmatweb\Cumin;
 class ItemsIterator implements \Iterator
 {
     /**
-     * @var Cart
+     * @var Item[]
      */
-    private $cart;
+    private $items;
+    private $k = 0;
 
-    public function __construct(Cart $cart)
+    public function __construct(array $items)
     {
-        $this->cart = $cart;
+        $this->items = $items;
     }
 
     /**
@@ -25,6 +26,7 @@ class ItemsIterator implements \Iterator
      */
     public function current()
     {
+        return $this->items[$this->k];
     }
 
     /**
@@ -35,7 +37,7 @@ class ItemsIterator implements \Iterator
      */
     public function next()
     {
-        // TODO: Implement next() method.
+        $this->k++;
     }
 
     /**
@@ -49,7 +51,7 @@ class ItemsIterator implements \Iterator
      */
     public function key()
     {
-        // TODO: Implement key() method.
+        return $this->k;
     }
 
     /**
@@ -64,7 +66,7 @@ class ItemsIterator implements \Iterator
      */
     public function valid()
     {
-        // TODO: Implement valid() method.
+        return isset($this->items[$this->k]);
     }
 
     /**
@@ -75,6 +77,6 @@ class ItemsIterator implements \Iterator
      */
     public function rewind()
     {
-        // TODO: Implement rewind() method.
+        $this->k = 0;
     }
 }

@@ -143,6 +143,6 @@ class Cart
 
     public function getIterator(): ItemsIterator
     {
-        return new ItemsIterator($this);
+        return new ItemsIterator($this->items);
     }
 }
