@@ -2,10 +2,14 @@
 
 namespace Mmatweb\Cumin\Tests;
 
+use Mmatweb\Cumin\BackEndInterface;
+use Mmatweb\Cumin\BackEndNotDefinedException;
 use Mmatweb\Cumin\Cart;
 use Mmatweb\Cumin\Item;
 use Mmatweb\Cumin\NotSameItemPriceException;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @internal
@@ -21,13 +25,54 @@ final class CartTest extends TestCase
     public $ItemTwo;
     /** @var Item */
     public $ItemOneWithBadPrice;
+    /** @var BackEndInterface|ObjectProphecy */
+    private $backEnd;
+
+    protected const SESSION_ID = 'abc';
 
     protected function setUp(): void
     {
+        $this->backEnd = $this->prophesize(BackEndInterface::class);
         $this->cart = new Cart(null);
         $this->ItemOne = new Item(uniqid('item'), 1.11, '');
         $this->ItemTwo = new Item(uniqid('item'), 2.22, '');
         $this->ItemOneWithBadPrice = new Item($this->ItemOne->getId(), 1.22, '');
+    }
+
+    /**
+     * @throws BackEndNotDefinedException
+     */
+    public function test save throw exception if backEnd is not defined()
+    {
+        $this->expectException(BackEndNotDefinedException::class);
+
+        $this->cart->save(self::SESSION_ID);
+    }
+
+    /**
+     * @throws BackEndNotDefinedException
+     */
+    public function test save work()
+    {
+        $this->backEnd
+            ->write(Argument::exact(self::SESSION_ID), Argument::any())
+            ->shouldBeCalledOnce()
+            ->willReturn(true)
+        ;
+        $this->cart = new Cart($this->backEnd->reveal());
+
+        $this->cart->save(self::SESSION_ID);
+    }
+
+    public function test get cart from backEnd()
+    {
+        $this->backEnd
+            ->read(Argument::exact(self::SESSION_ID))
+            ->shouldBeCalledOnce()
+            ->willReturn(serialize(new Cart(null)))
+        ;
+
+        $this->assertInstanceOf(Cart::class, Cart::getCart($this->backEnd->reveal(), self::SESSION_ID));
     }
 
     /**

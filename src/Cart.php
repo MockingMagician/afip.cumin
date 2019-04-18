@@ -19,9 +19,46 @@ class Cart
         $this->backEnd = $backEnd;
     }
 
-    public static function getCart(BackEndInterface $backEnd, $id): self
+    public function __sleep()
     {
-        return unserialize($backEnd->read($id));
+        return ['items', 'id'];
+    }
+
+    /**
+     * @param null|BackEndInterface $backEnd
+     *
+     * @return Cart
+     */
+    public function setBackEnd(?BackEndInterface $backEnd): self
+    {
+        $this->backEnd = $backEnd;
+
+        return $this;
+    }
+
+    public static function getCart(BackEndInterface $backEnd, string $id): self
+    {
+        /** @var Cart $cart */
+        $cart = unserialize($backEnd->read($id));
+        $cart->setBackEnd($backEnd);
+
+        return $cart;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @throws BackEndNotDefinedException
+     *
+     * @return bool
+     */
+    public function save(string $id): bool
+    {
+        if (!$this->backEnd) {
+            throw new BackEndNotDefinedException();
+        }
+
+        return $this->backEnd->write($id, serialize($this));
     }
 
     /**
