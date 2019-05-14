@@ -9,7 +9,7 @@ class Cart
     private $id;
     private $backEnd;
 
-    public function __construct(?BackEndInterface $backEnd)
+    public function __construct(?BackEndInterface $backEnd = null, ?string $forceId = null)
     {
         try {
             $this->id = uniqid('cart_').'_'.random_bytes(12);
@@ -17,6 +17,9 @@ class Cart
             $this->id = uniqid('cart_').'_'.rand(999, 999999);
         }
         $this->backEnd = $backEnd;
+        if ($forceId) {
+            $this->id = $forceId;
+        }
     }
 
     public function __sleep()
@@ -58,7 +61,7 @@ class Cart
             throw new BackEndNotDefinedException();
         }
 
-        return $this->backEnd->write($id, serialize($this));
+        return $this->backEnd->write($this->id, serialize($this));
     }
 
     /**

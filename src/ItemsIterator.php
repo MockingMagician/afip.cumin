@@ -12,7 +12,7 @@ class ItemsIterator implements \Iterator
 
     public function __construct(array $items)
     {
-        $this->items = $items;
+        $this->items = array_values($items);
     }
 
     /**
